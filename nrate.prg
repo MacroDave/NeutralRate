@@ -509,13 +509,13 @@ call MUE_Stage2(x_mue2)
 !bound2=@qnorm(0.95)
 
 smpl ssest
-series low70=(nrate-!bound1*nrate_stage3se)
-series high70=(nrate+!bound1*nrate_stage3se)
-series low90=(nrate-!bound2*nrate_stage3se)
-series high90=(nrate+!bound2*nrate_stage3se)
+series low70=(nrate_stage3-!bound1*nrate_stage3se)
+series high70=(nrate_stage3+!bound1*nrate_stage3se)
+series low90=(nrate_stage3-!bound2*nrate_stage3se)
+series high90=(nrate_stage3+!bound2*nrate_stage3se)
 
 smpl 1994q1 @last
-group g_NRATE low90 high90 low70 high70 NRATE RCASH
+group g_NRATE low90 high90 low70 high70 NRATE_stage3 RCASH
 freeze(p_NRATE) g_NRATE.mixed band(1,2,3,4) line(5)
 p_NRATE.setelem(1) fillcolor(@rgb(16, 189, 239))
 p_NRATE.setelem(2) fillcolor(@rgb(14, 139, 241))
