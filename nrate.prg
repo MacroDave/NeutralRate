@@ -351,8 +351,9 @@ call MUE_Stage1(YPOT_stage1)
 	ss_stage2.append @signal lrgdp = ygap + ypot
 	
 	ss_stage2.append @state ygap = alpha(1)*ygap(-1) + alpha(2)*ygapL1(-1) + _
-													alpha(3)*((rcash(-1) + rcash(-2))/2 - 4*(g(-1)+gL1(-1))/2) - _
-													alpha(3)*theta(2) + _
+													alpha(3)*(rcash(-1) + rcash(-2))/2 _
+													+ theta(1)*g(-1) + _
+													theta(2) + _
 													[ename = e1, var = (sigma(1)^2)]
 	ss_stage2.append @state ygapL1 = ygap(-1)
 	ss_stage2.append @state ygapL2 = ygapL1(-1)
@@ -454,7 +455,7 @@ call MUE_Stage2(x_mue2)
 	ss_stage3.append @state NAIRU = NAIRU(-1) + [ename = e4, var = (sigma(4)^2)]
 	ss_stage3.append @state NAIRUL1 = NAIRU(-1)
 
-	ss_stage3.append @state ypot = ypot(-1) + g(-1) + [ename = e5, var = (sigma(5)^2)]
+	ss_stage3.append @state ypot = ypot(-1) + g(-1) + [ename = e5, var = ((1+lambda_g^2)*sigma(5)^2)]
 
 	ss_stage3.append @state g = g(-1) + [ename = e6, var = (lambda_g*sigma(5))^2]
 	ss_stage3.append @state gL1 = g(-1)
@@ -463,6 +464,8 @@ call MUE_Stage2(x_mue2)
 	ss_stage3.append @state zL1 = z(-1)
 
 	ss_stage3.append @state nrate = 4*(g(-1) + e7) + (z(-1) + e6)
+
+	ss_stage3.append @evar cov(e5, e6) = (lambda_g*sigma(5))^2
 
 	vector(12) mprior = 0
 	mprior(1) = ygap_ini(@ifirst(ygap_ini))
@@ -532,5 +535,4 @@ p_NRATE.options gridnone
 show p_NRATE
 
 p_NRATE.save(t=pdf) NeutralRate_Chart.pdf
-
 
